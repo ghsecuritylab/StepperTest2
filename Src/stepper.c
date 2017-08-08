@@ -155,16 +155,18 @@ void stepper_center_arc(int plane, float x, float y, float offset_x, float offse
 	int i;
 
 	switch (plane) {
-	case PLANE_XY:
-		float x_dist = x - start_x;
-		float y_dist = y - start_y;
-		int x_steps = distance_to_steps(x_dist);
-		int y_steps = distance_to_steps(y_dist);
-		float radius = sqrt(pow(offset_x, 2) + pow(offset_y));
-		float theta_1 = atan(y_dist / x_dist);
+		case PLANE_XY:
+		{
+			float x_dist = x - start_x;
+			float y_dist = y - start_y;
+			int x_steps = distance_to_steps(x_dist);
+			int y_steps = distance_to_steps(y_dist);
+			float radius = sqrt(pow(offset_x, 2) + pow(offset_y, 2));
+			float theta_1 = atan(y_dist / x_dist);
 
-		for (i = 0; i < x_steps; i++) {
-			float theta = acos((x_dist - (i * (1 / STEPPER_STEPS_PER_MM))) / radius);
+			for (i = 0; i < x_steps; i++) {
+				float theta = acos((x_dist - (i * (1 / STEPPER_STEPS_PER_MM))) / radius);
+			}
 		}
 	}
 }
@@ -191,44 +193,35 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	BaseType_t xResult;
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
-	if (tool_state.mode == STEPPER_MODE_NORMAL)
-	{
-		for (; i < 4; i++) {
-			struct stepper_axis_state_t *stp = &steppers[i];
+	for (; i < 4; i++) {
+		struct stepper_axis_state_t *stp = &steppers[i];
 
-			if (stp->enabled == 1) {
-				HAL_GPIO_WritePin(stp->port, stp->pin, GPIO_PIN_RESET);
+		if (stp->enabled == 1) {
+			HAL_GPIO_WritePin(stp->port, stp->pin, GPIO_PIN_RESET);
 
-				if (stp->step_counter == stp->step_target) {
-					stp->enabled = 0;
-					stp->increment_counter = 0;
-					stp->step_counter = 0;
-					stp->step_period = 0;
-					stp->step_target = 0;
+			if (stp->step_counter == stp->step_target) {
+				stp->enabled = 0;
+				stp->increment_counter = 0;
+				stp->step_counter = 0;
+				stp->step_period = 0;
+				stp->step_target = 0;
 
-					xResult = xEventGroupSetBitsFromISR(xStepperEventGroup, (1 << i), &xHigherPriorityTaskWoken);
+				xResult = xEventGroupSetBitsFromISR(xStepperEventGroup, (1 << i), &xHigherPriorityTaskWoken);
 
-					if (xResult != pdFAIL) {
-						portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-					}
-				}
-				else if (stp->increment_counter == stp->step_period) {
-					stp->increment_counter = 0;
-					stp->step_counter++;
-
-					HAL_GPIO_WritePin(stp->dirport, stp->dirpin, stp->direction);
-					HAL_GPIO_WritePin(stp->port, stp->pin, GPIO_PIN_SET);
-				}
-				else {
-					stp->increment_counter++;
+				if (xResult != pdFAIL) {
+					portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 				}
 			}
-		}
-	}
-	else if (tool_state.mode == STEPPER_MODE_HOMING)
-	{
-		if (homing_counter == speed_to_step_period(50)) {
-			homing_counter = 0;
+			else if (stp->increment_counter == stp->step_period) {
+				stp->increment_counter = 0;
+				stp->step_counter++;
+
+				HAL_GPIO_WritePin(stp->dirport, stp->dirpin, stp->direction);
+				HAL_GPIO_WritePin(stp->port, stp->pin, GPIO_PIN_SET);
+			}
+			else {
+				stp->increment_counter++;
+			}
 		}
 	}
 }

@@ -72,6 +72,18 @@
 #define RMII_RXD0_GPIO_Port GPIOC
 #define RMII_RXD1_Pin GPIO_PIN_5
 #define RMII_RXD1_GPIO_Port GPIOC
+#define STEPXCLK_Pin GPIO_PIN_13
+#define STEPXCLK_GPIO_Port GPIOF
+#define STEPYDIR_Pin GPIO_PIN_14
+#define STEPYDIR_GPIO_Port GPIOF
+#define STEPYEN_Pin GPIO_PIN_15
+#define STEPYEN_GPIO_Port GPIOF
+#define STEPYCLK_Pin GPIO_PIN_9
+#define STEPYCLK_GPIO_Port GPIOE
+#define STEPXDIR_Pin GPIO_PIN_11
+#define STEPXDIR_GPIO_Port GPIOE
+#define STEPXEN_Pin GPIO_PIN_13
+#define STEPXEN_GPIO_Port GPIOE
 #define RMII_TXD1_Pin GPIO_PIN_13
 #define RMII_TXD1_GPIO_Port GPIOB
 #define LD3_Pin GPIO_PIN_14
@@ -98,30 +110,18 @@
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
+#define XLIMIT_1_Pin GPIO_PIN_9
+#define XLIMIT_1_GPIO_Port GPIOG
 #define RMII_TX_EN_Pin GPIO_PIN_11
 #define RMII_TX_EN_GPIO_Port GPIOG
 #define RMII_TXD0_Pin GPIO_PIN_13
 #define RMII_TXD0_GPIO_Port GPIOG
+#define XLIMIT_0_Pin GPIO_PIN_14
+#define XLIMIT_0_GPIO_Port GPIOG
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
 #define LD2_Pin GPIO_PIN_7
 #define LD2_GPIO_Port GPIOB
-#define STEPXCLK_Pin GPIO_PIN_13
-#define STEPXDIR_Pin GPIO_PIN_11
-#define STEPXEN_Pin GPIO_PIN_13
-#define STEPYCLK_Pin GPIO_PIN_9
-#define STEPYDIR_Pin GPIO_PIN_14
-#define STEPYEN_Pin GPIO_PIN_15
-#define STEPXCLK_GPIO_Port GPIOF
-#define STEPXDIR_GPIO_Port GPIOE
-#define STEPXEN_GPIO_Port GPIOE
-#define STEPYCLK_GPIO_Port GPIOE
-#define STEPYDIR_GPIO_Port GPIOF
-#define STEPYEN_GPIO_Port GPIOF
-#define XLIMIT_0_GPIO_Port GPIOG
-#define XLIMIT_0_Pin GPIO_PIN_14
-#define XLIMIT_1_GPIO_Port GPIOG
-#define XLIMIT_1_Pin GPIO_PIN_9
 
 /* USER CODE BEGIN Private defines */
 
